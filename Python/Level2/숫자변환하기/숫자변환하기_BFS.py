@@ -2,7 +2,6 @@ from collections import deque
 
 
 def solution(x, y, n):
-    answer = 0
     answer = BFS(x, y, n)
     return answer
 
