@@ -2,7 +2,7 @@ def solution(weights):
     answer = 0
     check = [0] * 4001
 
-    for i in range(len(weights) - 1):
+    for i in range(len(weights)-1):
         check[weights[i]] = 1
         check[weights[i] * 2] = 1
         check[weights[i] * 3] = 1
