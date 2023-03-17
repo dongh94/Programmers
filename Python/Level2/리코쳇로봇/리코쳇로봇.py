@@ -3,58 +3,49 @@ from collections import deque
 # 상하좌우
 dr = [-1, 1, 0, 0]
 dc = [0, 0, -1, 1]
-cnt = 0
-
 
 def solution(board):
     answer = 0
     board_rowlength = len(board)
     board_collength = len(board[0])
+    find = 0
     for r in range(board_rowlength):
         for c in range(board_collength):
             if board[r][c] == "R":
                 answer = BFS(r, c, board, board_rowlength, board_collength)
+                find = 1
+                break
+        if find:
+            break
+
     return answer
 
 
 def BFS(r, c, board, board_rowlength, board_collength):
     Q = deque()
-    Q.append((r, c))
-    visited = [[0] * board_collength for _ in range(board_rowlength)]
-    cnt = 0
+    Q.append((r, c, 0))
+    visited = [[[0,0,0,0] for b in range(board_collength)] for a in range(board_rowlength)]
     while Q:
-        sr, sc = Q.popleft()
-        if board[sr][sc] == "G":
-            return visited[sr][sc]
+        r, c, ans = Q.popleft()
+
+        if board[r][c] == "G":
+            return ans
 
         for d in range(4):
-            nr = sr + dr[d]
-            nc = sc + dc[d]
-            if nr < 0 or nr >= board_rowlength or nc < 0 or nc >= board_collength:
-                continue
-            if board[nr][nc] == "." or board[nr][nc] == "G" and not visited[nr][nc]:
-                visited[nr][nc] = visited[sr][sc] + 1
-                Q.append((nr, nc))
-            if board[nr][nc] == "D" and board[sr][sc] == "G":
-                return cnt
-    print(visited)
+            sr = r
+            sc = c
+            while True:
+                nr = sr + dr[d]
+                nc = sc + dc[d]
+                if nr < 0 or nr >= board_rowlength or nc < 0 or nc >= board_collength:
+                    break
+                if board[nr][nc] == "D":
+                    break
+                sr = nr
+                sc = nc
+            if not visited[sr][sc][d]:
+                visited[sr][sc][d] = 1
+                Q.append((sr, sc, ans + 1))
     return -1
-
-
-def DFS(r, c, board, board_rowlength, board_collength, direct):
-    global cnt
-    if board[r][c] == "G":
-        return cnt
-
-    nr = sr + dr[direct]
-    nc = sc + dc[direct]
-    if nr < 0 or nr >= board_rowlength or nc < 0 or nc >= board_collength:
-        continue
-    if board[nr][nc] == ".":
-        DFS(d)
-    if board[nr][nc] == "." or board[nr][nc] == "G" and not visited[nr][nc]:
-        visited[nr][nc] = visited[sr][sc] + 1
-        Q.append((nr, nc))
-    if board[nr][nc] == "D" and board[sr][sc] == "G":
-        return cnt
+print(solution(["...D..R", ".D.G...", "....D.D", "D....D.", "..D...."]))
 
