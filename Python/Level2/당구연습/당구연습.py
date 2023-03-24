@@ -6,6 +6,7 @@ def solution(m, n, startX, startY, balls):
         # 윗 벽 ()
         if not (startX == endX and startY > endY):
             diff = min(diff, abs(startX - endX) ** 2 + (startY + endY) ** 2)
+            print(diff)
         # 아래벽
         if not (startX == endX and startY < endY):
             diff = min(diff, abs(startX - endX) ** 2 + (2 * n - startY - endY) ** 2)
